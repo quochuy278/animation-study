@@ -9,8 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ThreeRouteImport } from './routes/three'
+import { Route as MotionRouteImport } from './routes/motion'
+import { Route as GsapRouteImport } from './routes/gsap'
 import { Route as IndexRouteImport } from './routes/index'
 
+const ThreeRoute = ThreeRouteImport.update({
+  id: '/three',
+  path: '/three',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MotionRoute = MotionRouteImport.update({
+  id: '/motion',
+  path: '/motion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GsapRoute = GsapRouteImport.update({
+  id: '/gsap',
+  path: '/gsap',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +37,61 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/gsap': typeof GsapRoute
+  '/motion': typeof MotionRoute
+  '/three': typeof ThreeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/gsap': typeof GsapRoute
+  '/motion': typeof MotionRoute
+  '/three': typeof ThreeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/gsap': typeof GsapRoute
+  '/motion': typeof MotionRoute
+  '/three': typeof ThreeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/gsap' | '/motion' | '/three'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/gsap' | '/motion' | '/three'
+  id: '__root__' | '/' | '/gsap' | '/motion' | '/three'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GsapRoute: typeof GsapRoute
+  MotionRoute: typeof MotionRoute
+  ThreeRoute: typeof ThreeRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/three': {
+      id: '/three'
+      path: '/three'
+      fullPath: '/three'
+      preLoaderRoute: typeof ThreeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/motion': {
+      id: '/motion'
+      path: '/motion'
+      fullPath: '/motion'
+      preLoaderRoute: typeof MotionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gsap': {
+      id: '/gsap'
+      path: '/gsap'
+      fullPath: '/gsap'
+      preLoaderRoute: typeof GsapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +104,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GsapRoute: GsapRoute,
+  MotionRoute: MotionRoute,
+  ThreeRoute: ThreeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
